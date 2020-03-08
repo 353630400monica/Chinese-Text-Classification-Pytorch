@@ -11,7 +11,7 @@ from datetime import timedelta
 MAX_VOCAB_SIZE = 10000  # 词表长度限制
 UNK, PAD = '<UNK>', '<PAD>'  # 未知字，padding符号
 
-
+#建立词表
 def build_vocab(file_path, tokenizer, max_size, min_freq):
     vocab_dic = {}
     with open(file_path, 'r', encoding='UTF-8') as f:
@@ -29,11 +29,11 @@ def build_vocab(file_path, tokenizer, max_size, min_freq):
 
 
 def build_dataset(config, ues_word):
-    if ues_word:
+    if ues_word:#设置tokenizer的格式
         tokenizer = lambda x: x.split(' ')  # 以空格隔开，word-level
     else:
         tokenizer = lambda x: [y for y in x]  # char-level
-    if os.path.exists(config.vocab_path):
+    if os.path.exists(config.vocab_path):#如果词表已存在，则不用再建
         vocab = pkl.load(open(config.vocab_path, 'rb'))
     else:
         vocab = build_vocab(config.train_path, tokenizer=tokenizer, max_size=MAX_VOCAB_SIZE, min_freq=1)
